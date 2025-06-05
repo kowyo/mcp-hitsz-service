@@ -64,6 +64,12 @@ source .venv/bin/activate
 mcp dev mcp_jw_service.py
 ```
 
+### 启动服务
+
+```bash
+uvx mcpo --port 8000 -- uv --directory absolute/path/to/parent/folder run mcp_jw_service.py
+```
+
 ## 🛠️ 可用工具
 
 ### 📊 成绩相关工具
