@@ -70,6 +70,13 @@ mcp dev mcp_jw_service.py
 uvx mcpo --port 8000 -- uv --directory absolute/path/to/parent/folder run mcp_jw_service.py
 ```
 
+> [!TIP]
+> 建议同时启用 mcp-time-server 服务，以便处理时间相关的请求。你可以通过以下命令启动：
+>
+> ```bash
+> uvx mcpo --port 8001 -- uvx mcp-server-time --local-timezone=Asia/Shanghai
+> ```
+
 ## 🛠️ 可用工具
 
 ### 📊 成绩相关工具
