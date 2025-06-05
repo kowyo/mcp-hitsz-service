@@ -1,4 +1,5 @@
-import re, base64, requests, execjs  # execjs 用来跑 encrypt.js
+import requests
+import execjs  # execjs 用来跑 encrypt.js
 from bs4 import BeautifulSoup
 from typing import Optional
 
@@ -57,7 +58,7 @@ class JWLoginClient:
             salt = dom.select_one("#pwdEncryptSalt")['value']
             
             # 步骤 2: 加密密码
-            with open("/Users/doby/D/mcp-learn/mcp_hitsz_jw/encrypt.js", encoding="utf8") as f:
+            with open("./encrypt.js", encoding="utf8") as f:
                 ctx = execjs.compile(f.read())
             encrypted_pwd = ctx.call("encryptAES", password, salt)
             
