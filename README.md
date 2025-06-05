@@ -70,11 +70,11 @@ mcp dev mcp_jw_service.py
 
 | 工具名称 | 描述 | 参数 |
 |---------|------|------|
-| `get_all_grades` | 获取所有课程成绩和GPA信息 | `force_reload`: 是否强制重新加载 |
-| `get_gpa_info` | 获取GPA和排名详细信息 | 无 |
+| `get_all_grades` | 获取所有课程成绩和 GPA 信息 | `force_reload`: 是否强制重新加载 |
+| `get_gpa_info` | 获取 GPA 和排名详细信息 | 无 |
 | `get_semester_list` | 获取有成绩的学期列表 | 无 |
 | `get_grades_by_semester` | 获取指定学期的成绩详情 | `semester_code`: 学期代码 |
-| `export_grades_to_csv` | 导出所有成绩为CSV文件 | `filename`: 文件名（默认grades.csv） |
+| `export_grades_to_csv` | 导出所有成绩为 CSV 文件 | `filename`: 文件名（默认 grades.csv） |
 
 ### 📅 学期相关工具
 
@@ -136,7 +136,7 @@ mcp dev mcp_jw_service.py
   "course_name_en": "Fundamentals of Computer Programming",
   "credit": 3.0,
   "semester": "2023-20241",
-  "semester_display": "2023-2024学年第1学期",
+  "semester_display": "2023-2024 学年第 1 学期",
   "score": "85",
   "score_raw": "85",
   "exam_type": "考试",
@@ -150,7 +150,7 @@ mcp dev mcp_jw_service.py
 }
 ```
 
-### GPA信息 (GPAInfo)
+### GPA 信息 (GPAInfo)
 
 ```json
 {
@@ -170,7 +170,7 @@ mcp dev mcp_jw_service.py
 
 ```json
 {
-  "name": "T5楼",
+  "name": "T5 楼",
   "code": "17",
   "name_en": "Teaching Building T5"
 }
@@ -257,12 +257,12 @@ mcp dev mcp_jw_service.py
 - ✅ **批量获取**: 一次请求获取完整数据集
 - ✅ **懒加载**: 按需加载数据，节省资源
 - ✅ **内存缓存**: 数据在内存中保持，支持快速访问
-- ✅ **缓存过期**: 教室查询支持5分钟缓存过期机制
+- ✅ **缓存过期**: 教室查询支持 5 分钟缓存过期机制
 
 ## 🔒 安全注意事项
 
 1. **凭据保护**: `.env` 文件包含敏感信息，请勿分享或提交到代码仓库
-2. **网络安全**: 服务通过HTTPS与教务系统通信
+2. **网络安全**: 服务通过 HTTPS 与教务系统通信
 3. **数据隐私**: 所有数据仅在本地处理，不会发送到第三方服务器
 4. **自动登录**: 支持登录状态检查和自动重连
 
@@ -304,7 +304,7 @@ mcp dev mcp_jw_service.py
 ### 缓存机制说明
 - 首次使用建议先调用 `get_all_grades` 加载基础数据
 - 大部分功能支持缓存，可设置 `force_reload=true` 强制刷新
-- 教室可用性查询有5分钟缓存过期时间
+- 教室可用性查询有 5 分钟缓存过期时间
 - 调用 `refresh_data` 可清空所有缓存
 
 ## 📈 版本历史
@@ -326,7 +326,7 @@ mcp dev mcp_jw_service.py
 ### v1.0.0
 - 基础功能实现
 - 支持手动登录
-- 基本的成绩和GPA查询
+- 基本的成绩和 GPA 查询
 
 ## 📄 许可证
 

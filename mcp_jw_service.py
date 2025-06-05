@@ -8,7 +8,7 @@ from datetime import datetime
 # 显示环境信息以便调试
 print(f"Python version: {sys.version}", file=sys.stderr)
 print(f"Current working directory: {os.getcwd()}", file=sys.stderr)
-# 显示python路径
+# 显示 python 路径
 print(f"Python path: {sys.executable}", file=sys.stderr)
 # 显示 which python
 # print(f"Which python: {!which python}", file=sys.stderr)
@@ -49,7 +49,7 @@ print("Initializing FastMCP server...", file=sys.stderr)
 app = FastMCP('hitsz-jw-service')
 print("FastMCP server initialized", file=sys.stderr)
 
-# 全局共享的JWClient实例
+# 全局共享的 JWClient 实例
 _client = None
 
 def get_credentials() -> tuple[str, str]:
@@ -68,10 +68,10 @@ def get_credentials() -> tuple[str, str]:
     if not username or not password:
         raise ValueError(
             "请设置登录凭据！\n"
-            "方法1: 创建 .env 文件，内容如下：\n"
+            "方法 1: 创建 .env 文件，内容如下：\n"
             "HITSZ_USERNAME=your_student_id\n"
             "HITSZ_PASSWORD=your_password\n\n"
-            "方法2: 设置环境变量：\n"
+            "方法 2: 设置环境变量：\n"
             "export HITSZ_USERNAME=your_student_id\n"
             "export HITSZ_PASSWORD=your_password"
         )
@@ -79,7 +79,7 @@ def get_credentials() -> tuple[str, str]:
     return username, password
 
 def get_client() -> JWClient:
-    """获取或初始化JWClient实例"""
+    """获取或初始化 JWClient 实例"""
     global _client
     if _client is None:
         try:
@@ -108,13 +108,13 @@ def ensure_logged_in(client: JWClient) -> None:
 @app.tool()
 async def get_all_grades(force_reload: bool = False) -> Dict[str, Any]:
     """
-    获取所有课程成绩和GPA信息，这是获取成绩数据的主要入口
+    获取所有课程成绩和 GPA 信息，这是获取成绩数据的主要入口
     
     Args:
         force_reload: 是否强制重新加载数据（默认使用缓存）
         
     Returns:
-        包含所有成绩和GPA信息的完整数据
+        包含所有成绩和 GPA 信息的完整数据
     """
     print(f"Fetching all grades (force_reload={force_reload})", file=sys.stderr)
     try:
@@ -126,7 +126,7 @@ async def get_all_grades(force_reload: bool = False) -> Dict[str, Any]:
         
         print(f"Found {len(grades)} courses", file=sys.stderr)
         
-        # 转换为字典格式以便JSON序列化
+        # 转换为字典格式以便 JSON 序列化
         grades_dict = [asdict(grade) for grade in grades]
         
         response = {
@@ -136,7 +136,7 @@ async def get_all_grades(force_reload: bool = False) -> Dict[str, Any]:
             "message": f"成功获取 {len(grades)} 门课程成绩"
         }
         
-        # 添加GPA信息（如果有）
+        # 添加 GPA 信息（如果有）
         if result.get("gpa_info"):
             response["gpa_info"] = asdict(result["gpa_info"])
             print("GPA info included", file=sys.stderr)
@@ -146,16 +146,16 @@ async def get_all_grades(force_reload: bool = False) -> Dict[str, Any]:
         print(f"Error fetching grades: {e}", file=sys.stderr)
         import traceback
         traceback.print_exc(file=sys.stderr)
-        return {"success": False, "message": f"获取成绩失败: {str(e)}"}
+        return {"success": False, "message": f"获取成绩失败：{str(e)}"}
 
 
 @app.tool()
 async def get_gpa_info() -> Dict[str, Any]:
     """
-    获取GPA和排名信息
+    获取 GPA 和排名信息
     
     Returns:
-        包含GPA、排名、平均分等详细信息
+        包含 GPA、排名、平均分等详细信息
     """
     print("Fetching GPA info", file=sys.stderr)
     try:
@@ -164,7 +164,7 @@ async def get_gpa_info() -> Dict[str, Any]:
         
         gpa_info = client.get_gpa_info()
         if gpa_info is None:
-            return {"success": False, "message": "未找到GPA信息"}
+            return {"success": False, "message": "未找到 GPA 信息"}
             
         print("GPA info fetched successfully", file=sys.stderr)
         return {
@@ -173,7 +173,7 @@ async def get_gpa_info() -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching GPA info: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取GPA信息失败: {str(e)}"}
+        return {"success": False, "message": f"获取 GPA 信息失败：{str(e)}"}
 
 
 @app.tool()
@@ -198,7 +198,7 @@ async def get_semester_list() -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching semester list: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取学期列表失败: {str(e)}"}
+        return {"success": False, "message": f"获取学期列表失败：{str(e)}"}
 
 
 @app.tool()
@@ -207,7 +207,7 @@ async def get_grades_by_semester(semester_code: str) -> Dict[str, Any]:
     获取指定学期的成绩详情
     
     Args:
-        semester_code: 学期代码，如"2023-20241"（可通过get_semester_list获取）
+        semester_code: 学期代码，如"2023-20241"（可通过 get_semester_list 获取）
         
     Returns:
         该学期的详细成绩列表
@@ -231,16 +231,16 @@ async def get_grades_by_semester(semester_code: str) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching grades for semester {semester_code}: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取学期成绩失败: {str(e)}"}
+        return {"success": False, "message": f"获取学期成绩失败：{str(e)}"}
 
 
 @app.tool()
 async def export_grades_to_csv(filename: str = "grades.csv") -> Dict[str, Any]:
     """
-    导出所有成绩为CSV文件
+    导出所有成绩为 CSV 文件
     
     Args:
-        filename: 导出的文件名（默认为grades.csv）
+        filename: 导出的文件名（默认为 grades.csv）
         
     Returns:
         导出结果和文件路径
@@ -260,7 +260,7 @@ async def export_grades_to_csv(filename: str = "grades.csv") -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error exporting grades: {e}", file=sys.stderr)
-        return {"success": False, "message": f"导出成绩失败: {str(e)}"}
+        return {"success": False, "message": f"导出成绩失败：{str(e)}"}
 
 
 # ==================== 学期相关工具 ====================
@@ -290,7 +290,7 @@ async def get_current_semester(force_reload: bool = False) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching current semester: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取当前学期失败: {str(e)}"}
+        return {"success": False, "message": f"获取当前学期失败：{str(e)}"}
 
 
 @app.tool()
@@ -319,7 +319,7 @@ async def get_all_semesters() -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching all semesters: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取学期信息失败: {str(e)}"}
+        return {"success": False, "message": f"获取学期信息失败：{str(e)}"}
 
 
 @app.tool()
@@ -353,7 +353,7 @@ async def get_semester_first_day(academic_year: str = None, semester: str = None
         }
     except Exception as e:
         print(f"Error fetching semester first day: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取学期第一天失败: {str(e)}"}
+        return {"success": False, "message": f"获取学期第一天失败：{str(e)}"}
 
 
 @app.tool()
@@ -387,7 +387,7 @@ async def calculate_week_and_weekday(target_date: str, academic_year: str = None
         }
     except Exception as e:
         print(f"Error calculating week and weekday: {e}", file=sys.stderr)
-        return {"success": False, "message": f"计算周次和星期失败: {str(e)}"}
+        return {"success": False, "message": f"计算周次和星期失败：{str(e)}"}
 
 
 # ==================== 教室相关工具 ====================
@@ -421,7 +421,7 @@ async def get_teaching_buildings(force_reload: bool = False) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error fetching teaching buildings: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取教学楼信息失败: {str(e)}"}
+        return {"success": False, "message": f"获取教学楼信息失败：{str(e)}"}
 
 
 @app.tool()
@@ -439,10 +439,10 @@ async def query_classroom_availability(
     Args:
         academic_year: 学年，如"2024-2025"（默认为当前学年）
         semester: 学期代码，如"1"或"2"（默认为当前学期）
-        building_code: 教学楼代码，如"17"（用户不知道教学楼代码，你必须通过get_teaching_buildings获取教学楼列表，找到对应教学楼的教学楼代码）
-        week_numbers: 周次列表，如[1,2,3]
-        week_string: 周次字符串，如"1-3,5,7-9"（与week_numbers二选一）
-        use_cache: 是否使用缓存（默认true）
+        building_code: 教学楼代码，如"17"（用户不知道教学楼代码，你必须通过 get_teaching_buildings 获取教学楼列表，找到对应教学楼的教学楼代码）
+        week_numbers: 周次列表，如 [1,2,3]
+        week_string: 周次字符串，如"1-3,5,7-9"（与 week_numbers 二选一）
+        use_cache: 是否使用缓存（默认 true）
         
     Returns:
         教室可用性的详细信息
@@ -479,7 +479,7 @@ async def query_classroom_availability(
         }
     except Exception as e:
         print(f"Error querying classroom availability: {e}", file=sys.stderr)
-        return {"success": False, "message": f"查询教室可用性失败: {str(e)}"}
+        return {"success": False, "message": f"查询教室可用性失败：{str(e)}"}
 
 
 @app.tool()
@@ -500,10 +500,10 @@ async def get_available_classrooms(
     Args:
         academic_year: 学年，如"2024-2025"（默认为当前学年）
         semester: 学期代码，如"1"或"2"（默认为当前学期）
-        building_code: 教学楼代码，如"17"（用户不知道教学楼代码，你必须通过get_teaching_buildings获取教学楼列表，找到对应教学楼的教学楼代码）
-        week_numbers: 周次列表，如[1,2,3]
+        building_code: 教学楼代码，如"17"（用户不知道教学楼代码，你必须通过 get_teaching_buildings 获取教学楼列表，找到对应教学楼的教学楼代码）
+        week_numbers: 周次列表，如 [1,2,3]
         week_string: 周次字符串，如"1-3,5,7-9"
-        weekday: 星期几（1-7，1为周一）
+        weekday: 星期几（1-7，1 为周一）
         period: 节次（1-13）
         min_seats: 最少座位数
         use_cache: 是否使用缓存
@@ -550,7 +550,7 @@ async def get_available_classrooms(
         }
     except Exception as e:
         print(f"Error getting available classrooms: {e}", file=sys.stderr)
-        return {"success": False, "message": f"获取可用教室失败: {str(e)}"}
+        return {"success": False, "message": f"获取可用教室失败：{str(e)}"}
 
 
 # ==================== 工具方法 ====================
@@ -561,7 +561,7 @@ async def generate_week_mask(week_numbers: List[int]) -> Dict[str, Any]:
     根据周次列表生成周次掩码
     
     Args:
-        week_numbers: 周次列表，如[1,2,3,5,7,8,9]
+        week_numbers: 周次列表，如 [1,2,3,5,7,8,9]
         
     Returns:
         生成的周次掩码字符串
@@ -580,7 +580,7 @@ async def generate_week_mask(week_numbers: List[int]) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error generating week mask: {e}", file=sys.stderr)
-        return {"success": False, "message": f"生成周次掩码失败: {str(e)}"}
+        return {"success": False, "message": f"生成周次掩码失败：{str(e)}"}
 
 
 @app.tool()
@@ -608,7 +608,7 @@ async def parse_week_numbers(week_string: str) -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error parsing week string: {e}", file=sys.stderr)
-        return {"success": False, "message": f"解析周次字符串失败: {str(e)}"}
+        return {"success": False, "message": f"解析周次字符串失败：{str(e)}"}
 
 
 @app.tool()
@@ -633,7 +633,7 @@ async def refresh_data() -> Dict[str, Any]:
         }
     except Exception as e:
         print(f"Error refreshing data: {e}", file=sys.stderr)
-        return {"success": False, "message": f"刷新数据失败: {str(e)}"}
+        return {"success": False, "message": f"刷新数据失败：{str(e)}"}
 
 
 @app.tool()
@@ -646,24 +646,24 @@ async def get_server_info() -> Dict[str, Any]:
     """
     print("Fetching server info", file=sys.stderr)
     return {
-        "name": "哈工大（深圳）教务系统API服务",
+        "name": "哈工大（深圳）教务系统 API 服务",
         "version": "3.0.0",
-        "description": "基于JWClient的完整教务系统API，支持成绩、学期、教室等全功能",
+        "description": "基于 JWClient 的完整教务系统 API，支持成绩、学期、教室等全功能",
         "features": [
-            "自动从.env文件读取登录凭据",
+            "自动从.env 文件读取登录凭据",
             "智能缓存机制，避免重复请求",
-            "完整的成绩和GPA信息获取",
+            "完整的成绩和 GPA 信息获取",
             "学期信息查询和日期计算",
             "教室可用性查询和筛选",
             "数据导出和工具方法"
         ],
         "tool_categories": {
             "成绩相关": [
-                "get_all_grades - 获取所有成绩和GPA信息",
-                "get_gpa_info - 获取GPA和排名信息",
+                "get_all_grades - 获取所有成绩和 GPA 信息",
+                "get_gpa_info - 获取 GPA 和排名信息",
                 "get_semester_list - 获取有成绩的学期列表",
                 "get_grades_by_semester - 获取指定学期成绩",
-                "export_grades_to_csv - 导出成绩为CSV文件"
+                "export_grades_to_csv - 导出成绩为 CSV 文件"
             ],
             "学期相关": [
                 "get_current_semester - 获取当前学年学期",
@@ -684,19 +684,19 @@ async def get_server_info() -> Dict[str, Any]:
             ]
         },
         "setup_instructions": {
-            "step1": "安装依赖: pip install python-dotenv mcp requests",
-            "step2": "创建.env文件，内容如下:",
+            "step1": "安装依赖：pip install python-dotenv mcp requests",
+            "step2": "创建.env 文件，内容如下：",
             "env_content": [
                 "HITSZ_USERNAME=your_student_id",
                 "HITSZ_PASSWORD=your_password"
             ],
-            "step3": "运行服务: python mcp_jw_service.py"
+            "step3": "运行服务：python mcp_jw_service.py"
         },
         "usage_tips": [
-            "首次使用建议先调用get_all_grades加载基础数据",
-            "用户不知道教学楼代号，教室查询必须先获取教学楼列表确定building_code",
-            "周次可以用列表[1,2,3]或字符串'1-3,5'格式",
-            "大部分功能支持缓存，可设置force_reload=true强制刷新"
+            "首次使用建议先调用 get_all_grades 加载基础数据",
+            "用户不知道教学楼代号，教室查询必须先获取教学楼列表确定 building_code",
+            "周次可以用列表 [1,2,3] 或字符串'1-3,5'格式",
+            "大部分功能支持缓存，可设置 force_reload=true 强制刷新"
         ]
     }
 
@@ -713,7 +713,7 @@ if __name__ == "__main__":
             print(f"Configuration error: {e}", file=sys.stderr)
             print("Server will start but tools will fail until credentials are configured", file=sys.stderr)
         
-        # 运行MCP服务
+        # 运行 MCP 服务
         app.run(transport='stdio')
     except Exception as e:
         print(f"Error running MCP server: {e}", file=sys.stderr)

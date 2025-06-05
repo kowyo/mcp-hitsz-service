@@ -20,7 +20,7 @@ class CourseGrade:
     score: str             # 总成绩
     score_raw: str         # 原始分数
     exam_type: str         # 考核方式
-    course_type: str       # 课程类型(必修/选修)
+    course_type: str       # 课程类型 (必修/选修)
     course_category: str   # 课程类别
     department: str        # 开课院系
     is_pass: bool          # 是否及格
@@ -31,9 +31,9 @@ class CourseGrade:
 
 @dataclass
 class GPAInfo:
-    """GPA信息数据类"""
-    gpa: float                     # 核心课GPA
-    all_course_gpa: float          # 全部课程GPA
+    """GPA 信息数据类"""
+    gpa: float                     # 核心课 GPA
+    all_course_gpa: float          # 全部课程 GPA
     avg_score: float               # 核心课平均学分绩
     all_course_avg_score: float    # 全部课程平均学分绩
     rank: int                      # 排名
@@ -65,7 +65,7 @@ class CurrentSemester:
 @dataclass
 class TeachingBuilding:
     """教学楼信息数据类"""
-    name: str               # 教学楼名称，如"A楼"
+    name: str               # 教学楼名称，如"A 楼"
     code: str               # 教学楼代码，如"01"
     name_en: Optional[str]  # 教学楼英文名称，如"Teaching Building II"
 
@@ -89,7 +89,7 @@ class ClassroomOccupancy:
     classroom_code: str     # 教室代码
     weekday: int           # 星期几 (1-7)
     period: int            # 节次
-    reason: str            # 占用原因 ("排"=排课, "借"=借用, "考"=考试等)
+    reason: str            # 占用原因 ("排"=排课，"借"=借用，"考"=考试等)
 
 
 @dataclass
@@ -110,15 +110,15 @@ class SemesterFirstDay:
     academic_year: str      # 学年，如"2024-2025"
     semester_code: str      # 学期代码，如"2"
     semester_full_code: str # 完整学期编码，如"2024-20252"
-    first_day: datetime     # 学期第一天（第0周第一天）
+    first_day: datetime     # 学期第一天（第 0 周第一天）
     first_day_str: str      # 学期第一天字符串，如"2025-02-17"
 
 
 @dataclass
 class WeekdayInfo:
     """周次和星期信息数据类"""
-    week_number: int        # 周次（从0开始）
-    weekday: int           # 星期几（1=周一, 7=周日）
+    week_number: int        # 周次（从 0 开始）
+    weekday: int           # 星期几（1=周一，7=周日）
     weekday_name: str      # 星期几的中文名称
     date: datetime         # 具体日期
     date_str: str          # 日期字符串
@@ -127,7 +127,7 @@ class WeekdayInfo:
 class JWClient(JWLoginClient):
     """哈工大（深圳）教务系统客户端，提供各种教务系统功能接口"""
     
-    # 基础URL
+    # 基础 URL
     BASE_URL = "http://jw.hitsz.edu.cn"
     
     def __init__(self, username: str = None, password: str = None):
@@ -151,7 +151,7 @@ class JWClient(JWLoginClient):
         # 缓存教室可用性查询结果
         self._classroom_availability_cache: Dict[str, ClassroomAvailability] = {}
         self._classroom_availability_cache_ttl: Dict[str, float] = {}  # 缓存过期时间
-        self._cache_duration: int = 300  # 缓存5分钟
+        self._cache_duration: int = 300  # 缓存 5 分钟
         # 缓存学期第一天信息
         self._semester_first_day_cache: Dict[str, SemesterFirstDay] = {}
         self._semester_first_day_cache_loaded: Dict[str, bool] = {}
@@ -186,13 +186,13 @@ class JWClient(JWLoginClient):
     
     def _parse_grade(self, raw_grade: Dict[str, Any]) -> CourseGrade:
         """
-        解析原始成绩数据为CourseGrade对象
+        解析原始成绩数据为 CourseGrade 对象
         
         Args:
             raw_grade: 原始成绩数据
             
         Returns:
-            CourseGrade对象
+            CourseGrade 对象
         """
         # 安全地转换学分
         credit_raw = raw_grade.get('xf', 0)
@@ -211,7 +211,7 @@ class JWClient(JWLoginClient):
             score=raw_grade.get('zzcj', ''),                  # 总成绩
             score_raw=raw_grade.get('zzzscj', ''),            # 原始分数
             exam_type=raw_grade.get('khfs', ''),              # 考核方式
-            course_type=raw_grade.get('kcxz', ''),            # 课程性质(必修/选修)
+            course_type=raw_grade.get('kcxz', ''),            # 课程性质 (必修/选修)
             course_category=raw_grade.get('kclb', ''),        # 课程类别
             department=raw_grade.get('yxmc', ''),             # 开课院系
             is_pass=raw_grade.get('sfjg') == '0',             # 是否及格
@@ -222,13 +222,13 @@ class JWClient(JWLoginClient):
     
     def _parse_semester(self, raw_semester: Dict[str, Any]) -> SemesterInfo:
         """
-        解析原始学期数据为SemesterInfo对象
+        解析原始学期数据为 SemesterInfo 对象
         
         Args:
             raw_semester: 原始学期数据
             
         Returns:
-            SemesterInfo对象
+            SemesterInfo 对象
         """
         return SemesterInfo(
             academic_year=raw_semester.get('xn', ''),         # 学年
@@ -241,13 +241,13 @@ class JWClient(JWLoginClient):
     
     def _parse_current_semester(self, raw_data: Dict[str, Any]) -> CurrentSemester:
         """
-        解析当前学年学期数据为CurrentSemester对象
+        解析当前学年学期数据为 CurrentSemester 对象
         
         Args:
             raw_data: 原始当前学期数据
             
         Returns:
-            CurrentSemester对象
+            CurrentSemester 对象
         """
         return CurrentSemester(
             academic_year=raw_data.get('XN', ''),        # 学年
@@ -257,13 +257,13 @@ class JWClient(JWLoginClient):
     
     def _parse_teaching_building(self, raw_building: Dict[str, Any]) -> TeachingBuilding:
         """
-        解析教学楼数据为TeachingBuilding对象
+        解析教学楼数据为 TeachingBuilding 对象
         
         Args:
             raw_building: 原始教学楼数据
             
         Returns:
-            TeachingBuilding对象
+            TeachingBuilding 对象
         """
         return TeachingBuilding(
             name=raw_building.get('MC', ''),           # 教学楼名称
@@ -273,13 +273,13 @@ class JWClient(JWLoginClient):
     
     def _parse_classroom_info(self, raw_classroom: Dict[str, Any]) -> ClassroomInfo:
         """
-        解析教室信息数据为ClassroomInfo对象
+        解析教室信息数据为 ClassroomInfo 对象
         
         Args:
             raw_classroom: 原始教室数据
             
         Returns:
-            ClassroomInfo对象
+            ClassroomInfo 对象
         """
         # 安全地转换座位数
         seats_raw = raw_classroom.get('ZWS', 0)
@@ -302,13 +302,13 @@ class JWClient(JWLoginClient):
     
     def _parse_classroom_occupancy(self, raw_occupancy: Dict[str, Any]) -> ClassroomOccupancy:
         """
-        解析教室占用情况数据为ClassroomOccupancy对象
+        解析教室占用情况数据为 ClassroomOccupancy 对象
         
         Args:
             raw_occupancy: 原始占用情况数据
             
         Returns:
-            ClassroomOccupancy对象
+            ClassroomOccupancy 对象
         """
         # 安全地转换星期几
         weekday_raw = raw_occupancy.get('XQJ', 0)
@@ -338,10 +338,10 @@ class JWClient(JWLoginClient):
     
     def _fetch_all_data(self) -> Dict[str, Any]:
         """
-        从服务器获取所有数据（成绩和GPA信息）
+        从服务器获取所有数据（成绩和 GPA 信息）
         
         Returns:
-            包含成绩列表和GPA信息的字典
+            包含成绩列表和 GPA 信息的字典
         """
         # 获取成绩数据
         result = self._get_all_grades_raw()
@@ -357,19 +357,19 @@ class JWClient(JWLoginClient):
                     grade = self._parse_grade(raw_grade)
                     grades.append(grade)
                 except Exception as e:
-                    print(f"解析成绩数据失败: {e}")
+                    print(f"解析成绩数据失败：{e}")
         else:
-            print(f"获取成绩数据失败或数据格式异常: {result}")
+            print(f"获取成绩数据失败或数据格式异常：{result}")
         
         response = {
             "grades": grades
         }
         
-        # 获取GPA信息
+        # 获取 GPA 信息
         try:
             response["gpa_info"] = self._get_official_gpa()
         except Exception as e:
-            print(f"获取GPA信息失败: {e}")
+            print(f"获取 GPA 信息失败：{e}")
             response["gpa_info"] = None
                 
         return response
@@ -417,15 +417,15 @@ class JWClient(JWLoginClient):
             response.raise_for_status()
             return response.json()
         except Exception as e:
-            print(f"查询成绩失败: {e}")
+            print(f"查询成绩失败：{e}")
             return {"content": {"list": [], "total": 0}}
     
     def _get_official_gpa(self) -> GPAInfo:
         """
-        获取官方GPA信息（内部方法）
+        获取官方 GPA 信息（内部方法）
         
         Returns:
-            GPA信息对象
+            GPA 信息对象
         """
         session = self._prepare_session()
         
@@ -468,8 +468,8 @@ class JWClient(JWLoginClient):
                 return default
         
         return GPAInfo(
-            gpa=safe_float(data.get('GPA', 0)),                # 核心课GPA
-            all_course_gpa=safe_float(data.get('GPA_QBJQKC', 0)),  # 全部课程GPA
+            gpa=safe_float(data.get('GPA', 0)),                # 核心课 GPA
+            all_course_gpa=safe_float(data.get('GPA_QBJQKC', 0)),  # 全部课程 GPA
             avg_score=safe_float(data.get('PJXFJ', 0)),        # 核心课平均学分绩
             all_course_avg_score=safe_float(data.get('QBKCPJXFJ', 0)),  # 全部课程平均学分绩
             rank=safe_int(data.get('PM', 0)),                  # 排名
@@ -484,7 +484,7 @@ class JWClient(JWLoginClient):
         获取当前学年学期信息（内部方法）
         
         Returns:
-            CurrentSemester对象
+            CurrentSemester 对象
         """
         session = self._prepare_session()
         
@@ -494,7 +494,7 @@ class JWClient(JWLoginClient):
         headers = self._get_default_headers()
         headers["accept"] = "*/*"
         headers["referer"] = referer
-        del headers["content-type"]  # 这个接口不需要content-type
+        del headers["content-type"]  # 这个接口不需要 content-type
         
         response = session.post(url, headers=headers)
         response.raise_for_status()
@@ -517,7 +517,7 @@ class JWClient(JWLoginClient):
         headers = self._get_default_headers()
         headers["accept"] = "*/*"
         headers["referer"] = referer
-        del headers["content-type"]  # 这个接口不需要content-type
+        del headers["content-type"]  # 这个接口不需要 content-type
         
         try:
             response = session.post(url, headers=headers)
@@ -532,14 +532,14 @@ class JWClient(JWLoginClient):
                         building = self._parse_teaching_building(raw_building)
                         buildings.append(building)
                     except Exception as e:
-                        print(f"解析教学楼数据失败: {e}")
+                        print(f"解析教学楼数据失败：{e}")
             else:
-                print(f"教学楼数据格式异常: {data}")
+                print(f"教学楼数据格式异常：{data}")
                 
             return buildings
             
         except Exception as e:
-            print(f"获取教学楼列表失败: {e}")
+            print(f"获取教学楼列表失败：{e}")
             return []
     
     def _get_classrooms_raw(self, academic_year: str, semester: str, building_code: str, 
@@ -578,7 +578,7 @@ class JWClient(JWLoginClient):
             "jxl": building_code,
             "cdlb": "",
             "zc": week_mask,
-            "wpksfxs": "1",  # 必须为1，否则没课的教室不会被查询到
+            "wpksfxs": "1",  # 必须为 1，否则没课的教室不会被查询到
             "qsjsz": week_numbers,
             "kjs": "0",
             "xsbkycd": "0",
@@ -587,7 +587,7 @@ class JWClient(JWLoginClient):
             "pageSize": str(page_size)
         }
         
-        # 将参数转换为URL编码格式
+        # 将参数转换为 URL 编码格式
         body_parts = []
         for key, value in payload.items():
             body_parts.append(f"{key}={value}")
@@ -598,7 +598,7 @@ class JWClient(JWLoginClient):
             response.raise_for_status()
             return response.json()
         except Exception as e:
-            print(f"获取教室列表失败: {e}")
+            print(f"获取教室列表失败：{e}")
             return {"total": 0, "list": []}
     
     def _get_classroom_occupancy_raw(self, academic_year: str, semester: str, building_code: str,
@@ -644,7 +644,7 @@ class JWClient(JWLoginClient):
             "pageSize": "1000"  # 设置较大值获取所有占用情况
         }
         
-        # 将参数转换为URL编码格式
+        # 将参数转换为 URL 编码格式
         body_parts = []
         for key, value in payload.items():
             body_parts.append(f"{key}={value}")
@@ -659,11 +659,11 @@ class JWClient(JWLoginClient):
             if isinstance(data, list):
                 return data
             else:
-                print(f"教室占用情况数据格式异常: {data}")
+                print(f"教室占用情况数据格式异常：{data}")
                 return []
                 
         except Exception as e:
-            print(f"获取教室占用情况失败: {e}")
+            print(f"获取教室占用情况失败：{e}")
             return []
     
     def _get_all_grades_raw(self) -> Dict[str, Any]:
@@ -719,7 +719,7 @@ class JWClient(JWLoginClient):
             
             data = response.json()
             
-            # 从xlList中获取第一个元素的RQ字段
+            # 从 xlList 中获取第一个元素的 RQ 字段
             if 'xlList' in data and isinstance(data['xlList'], list) and len(data['xlList']) > 0:
                 first_item = data['xlList'][0]
                 first_day_str = first_item.get('RQ', '')
@@ -737,33 +737,33 @@ class JWClient(JWLoginClient):
                         first_day_str=first_day_str
                     )
                 else:
-                    raise ValueError(f"无法从响应中获取学期第一天信息: {first_item}")
+                    raise ValueError(f"无法从响应中获取学期第一天信息：{first_item}")
             else:
-                raise ValueError(f"响应数据格式异常，xlList为空或不存在: {data}")
+                raise ValueError(f"响应数据格式异常，xlList 为空或不存在：{data}")
                 
         except Exception as e:
-            print(f"获取学期第一天信息失败: {e}")
+            print(f"获取学期第一天信息失败：{e}")
             raise
     
     def get_all_grades(self, force_reload: bool = False) -> Dict[str, Any]:
         """
-        获取所有学期的成绩和GPA信息（基础数据源）
+        获取所有学期的成绩和 GPA 信息（基础数据源）
         
         Args:
             force_reload: 是否强制重新从服务器加载数据
             
         Returns:
-            包含成绩列表和GPA信息的字典
+            包含成绩列表和 GPA 信息的字典
         """
         self._load_data_if_needed(force_reload)
         return self._cached_data.copy() if self._cached_data else {"grades": [], "gpa_info": None}
     
     def get_gpa_info(self) -> Optional[GPAInfo]:
         """
-        获取GPA信息（基于缓存数据）
+        获取 GPA 信息（基于缓存数据）
         
         Returns:
-            GPA信息对象，如果没有数据则返回None
+            GPA 信息对象，如果没有数据则返回 None
         """
         self._load_data_if_needed()
         return self._cached_data.get("gpa_info") if self._cached_data else None
@@ -809,7 +809,7 @@ class JWClient(JWLoginClient):
     
     def export_grades_to_csv(self, filename: str = "grades.csv") -> str:
         """
-        导出成绩为CSV文件（基于缓存数据）
+        导出成绩为 CSV 文件（基于缓存数据）
         
         Args:
             filename: 导出的文件名
@@ -828,14 +828,14 @@ class JWClient(JWLoginClient):
         
         filepath = os.path.abspath(filename)
         
-        # 写入CSV文件
+        # 写入 CSV 文件
         with open(filepath, 'w', newline='', encoding='utf-8-sig') as csvfile:
             writer = csv.writer(csvfile)
             
-            # 写入GPA信息
+            # 写入 GPA 信息
             if gpa_info:
-                writer.writerow(['GPA统计信息'])
-                writer.writerow(['核心课GPA', '全部课程GPA', '核心课平均学分绩', '全部课程平均学分绩', '排名', '总人数', '排名百分比', '通过课程数', '获得学分'])
+                writer.writerow(['GPA 统计信息'])
+                writer.writerow(['核心课 GPA', '全部课程 GPA', '核心课平均学分绩', '全部课程平均学分绩', '排名', '总人数', '排名百分比', '通过课程数', '获得学分'])
                 writer.writerow([
                     gpa_info.gpa, 
                     gpa_info.all_course_gpa,
@@ -946,7 +946,7 @@ class JWClient(JWLoginClient):
                         semester = self._parse_semester(raw_semester)
                         semesters.append(semester)
                     except Exception as e:
-                        print(f"解析学期数据失败: {e}")
+                        print(f"解析学期数据失败：{e}")
         
         return semesters
     
@@ -956,8 +956,8 @@ class JWClient(JWLoginClient):
         获取学期第一天信息（带缓存）
         
         Args:
-            academic_year: 学年，如"2024-2025"，为None时使用当前学年
-            semester: 学期代码，如"2"，为None时使用当前学期
+            academic_year: 学年，如"2024-2025"，为 None 时使用当前学年
+            semester: 学期代码，如"2"，为 None 时使用当前学期
             force_reload: 是否强制重新从服务器加载数据
             
         Returns:
@@ -992,9 +992,9 @@ class JWClient(JWLoginClient):
         根据日期计算当前是第几周星期几
         
         Args:
-            target_date: 目标日期，可以是datetime对象或字符串（格式：YYYY-MM-DD）
-            academic_year: 学年，如"2024-2025"，为None时使用当前学年
-            semester: 学期代码，如"2"，为None时使用当前学期
+            target_date: 目标日期，可以是 datetime 对象或字符串（格式：YYYY-MM-DD）
+            academic_year: 学年，如"2024-2025"，为 None 时使用当前学年
+            semester: 学期代码，如"2"，为 None 时使用当前学期
             
         Returns:
             周次和星期信息对象
@@ -1010,11 +1010,11 @@ class JWClient(JWLoginClient):
         date_diff = target_date - semester_first_day.first_day
         days_diff = date_diff.days
         
-        # 计算周次（第0周开始）
+        # 计算周次（第 0 周开始）
         week_number = days_diff // 7
         
-        # 计算星期几（1=周一, 7=周日）
-        # Python的weekday()返回0-6（0=周一），需要转换为1-7
+        # 计算星期几（1=周一，7=周日）
+        # Python 的 weekday() 返回 0-6（0=周一），需要转换为 1-7
         weekday = target_date.weekday() + 1
         
         # 星期几的中文名称
@@ -1064,12 +1064,12 @@ class JWClient(JWLoginClient):
         生成周次掩码
         
         Args:
-            week_numbers: 周次列表，如[1, 3, 5]
+            week_numbers: 周次列表，如 [1, 3, 5]
             
         Returns:
             周次掩码字符串，如"0101010000000000000000000000000000"
         """
-        # 创建34位的掩码（通常一学期最多34周）
+        # 创建 34 位的掩码（通常一学期最多 34 周）
         mask = ['0'] * 34
         
         for week in week_numbers:
@@ -1086,7 +1086,7 @@ class JWClient(JWLoginClient):
             week_string: 周次字符串，如"3-5,8,10-12"
             
         Returns:
-            周次列表，如[3, 4, 5, 8, 10, 11, 12]
+            周次列表，如 [3, 4, 5, 8, 10, 11, 12]
         """
         weeks = []
         if not week_string.strip():
@@ -1113,11 +1113,11 @@ class JWClient(JWLoginClient):
         查询教室可用性
         
         Args:
-            academic_year: 学年，如"2024-2025"，为None时使用当前学年
-            semester: 学期，如"2"，为None时使用当前学期
+            academic_year: 学年，如"2024-2025"，为 None 时使用当前学年
+            semester: 学期，如"2"，为 None 时使用当前学期
             building_code: 教学楼代码，必须提供
-            week_numbers: 周次列表，如[1, 3, 5]
-            week_string: 周次字符串，如"3-5,8"，与week_numbers二选一
+            week_numbers: 周次列表，如 [1, 3, 5]
+            week_string: 周次字符串，如"3-5,8"，与 week_numbers 二选一
             use_cache: 是否使用缓存
             
         Returns:
@@ -1167,7 +1167,7 @@ class JWClient(JWLoginClient):
                     classroom = self._parse_classroom_info(raw_classroom)
                     classrooms.append(classroom)
                 except Exception as e:
-                    print(f"解析教室信息失败: {e}")
+                    print(f"解析教室信息失败：{e}")
         
         # 获取教室占用情况数据
         occupancy_data = self._get_classroom_occupancy_raw(
@@ -1181,7 +1181,7 @@ class JWClient(JWLoginClient):
                 occupancy = self._parse_classroom_occupancy(raw_occupancy)
                 occupancies.append(occupancy)
             except Exception as e:
-                print(f"解析教室占用情况失败: {e}")
+                print(f"解析教室占用情况失败：{e}")
         
         # 创建结果对象
         result = ClassroomAvailability(
@@ -1214,9 +1214,9 @@ class JWClient(JWLoginClient):
             building_code: 教学楼代码
             week_numbers: 周次列表
             week_string: 周次字符串
-            weekday: 星期几 (1-7)，为None时不过滤
-            period: 节次，为None时不过滤
-            min_seats: 最少座位数，为None时不过滤
+            weekday: 星期几 (1-7)，为 None 时不过滤
+            period: 节次，为 None 时不过滤
+            min_seats: 最少座位数，为 None 时不过滤
             use_cache: 是否使用缓存
             
         Returns:
@@ -1283,18 +1283,18 @@ if __name__ == "__main__":
     # 初始化客户端
     client = JWClient(username="210110703", password="@96236007Sc")
     
-    # 查询所有成绩和GPA信息（第一次会从服务器获取并缓存）
+    # 查询所有成绩和 GPA 信息（第一次会从服务器获取并缓存）
     result = client.get_all_grades()
     grades = result["grades"]
     gpa_info = result.get("gpa_info")
     
     print(f"共找到 {len(grades)} 门课程成绩")
     
-    # 打印GPA信息（使用缓存数据）
+    # 打印 GPA 信息（使用缓存数据）
     if gpa_info:
-        print(f"核心课GPA: {gpa_info.gpa}, 平均学分绩: {gpa_info.avg_score}")
-        print(f"排名: {gpa_info.rank}/{gpa_info.total_students} (前 {gpa_info.rank_percentage}%)")
-        print(f"获得学分: {gpa_info.total_credits}, 通过课程数: {gpa_info.passed_courses}")
+        print(f"核心课 GPA: {gpa_info.gpa}, 平均学分绩：{gpa_info.avg_score}")
+        print(f"排名：{gpa_info.rank}/{gpa_info.total_students} (前 {gpa_info.rank_percentage}%)")
+        print(f"获得学分：{gpa_info.total_credits}, 通过课程数：{gpa_info.passed_courses}")
     
     # 获取学期列表（使用缓存数据）
     semesters = client.get_semester_list()
@@ -1302,25 +1302,25 @@ if __name__ == "__main__":
     
     # 获取当前学年学期信息（带缓存）
     current_semester = client.get_current_semester()
-    print(f"当前学期: {current_semester.academic_year} 第{current_semester.semester_code}学期")
-    print(f"完整编码: {current_semester.semester_full_code}")
+    print(f"当前学期：{current_semester.academic_year} 第{current_semester.semester_code}学期")
+    print(f"完整编码：{current_semester.semester_full_code}")
     
     # 获取教学楼列表（带缓存）
     buildings = client.get_teaching_buildings()
     print(f"共有 {len(buildings)} 个教学楼")
-    for building in buildings[:5]:  # 显示前5个教学楼
+    for building in buildings[:5]:  # 显示前 5 个教学楼
         en_name = f" ({building.name_en})" if building.name_en else ""
-        print(f"  {building.name} (代码: {building.code}){en_name}")
+        print(f"  {building.name} (代码：{building.code}){en_name}")
     
     # 获取所有学年学期列表（从服务器获取）
     all_semesters = client.get_all_semesters()
     print(f"系统中共有 {len(all_semesters)} 个学期")
-    for semester in all_semesters[:3]:  # 显示前3个学期
+    for semester in all_semesters[:3]:  # 显示前 3 个学期
         print(f"  {semester.academic_year} {semester.semester_name} ({semester.semester_name_en})")
     
-    # 导出成绩为CSV（使用缓存数据）
+    # 导出成绩为 CSV（使用缓存数据）
     csv_path = client.export_grades_to_csv("我的成绩单.csv")
-    print(f"成绩单已导出到: {csv_path}")
+    print(f"成绩单已导出到：{csv_path}")
     
     print("\n" + "="*50)
     print("学期日期计算示例")
@@ -1329,8 +1329,8 @@ if __name__ == "__main__":
     # 获取当前学期第一天
     try:
         semester_first_day = client.get_semester_first_day()
-        print(f"当前学期第一天: {semester_first_day.first_day_str}")
-        print(f"学期编码: {semester_first_day.semester_full_code}")
+        print(f"当前学期第一天：{semester_first_day.first_day_str}")
+        print(f"学期编码：{semester_first_day.semester_full_code}")
         
         # 计算今天是第几周星期几
         from datetime import datetime
@@ -1344,7 +1344,7 @@ if __name__ == "__main__":
         print(f"{test_date} 是第 {weekday_info2.week_number} 周 {weekday_info2.weekday_name}")
         
     except Exception as e:
-        print(f"学期日期计算失败: {e}")
+        print(f"学期日期计算失败：{e}")
     
     print("\n" + "="*50)
     print("教室可用性查询示例")
@@ -1352,45 +1352,45 @@ if __name__ == "__main__":
     
     # 教室可用性查询示例
     try:
-        # 查询T5楼第16周的教室可用性
+        # 查询 T5 楼第 16 周的教室可用性
         availability = client.query_classroom_availability(
-            building_code="17",  # T5楼的代码
-            week_string="16"     # 第16周
+            building_code="17",  # T5 楼的代码
+            week_string="16"     # 第 16 周
         )
         
-        print(f"查询结果: {availability.academic_year} 第{availability.semester}学期")
-        print(f"教学楼代码: {availability.building_code}")
+        print(f"查询结果：{availability.academic_year} 第{availability.semester}学期")
+        print(f"教学楼代码：{availability.building_code}")
         print(f"共找到 {len(availability.classrooms)} 间教室")
         print(f"共有 {len(availability.occupancies)} 个占用记录")
         
-        # 显示前5间教室信息
-        print("\n教室列表（前5间）:")
+        # 显示前 5 间教室信息
+        print("\n教室列表（前 5 间）:")
         for classroom in availability.classrooms[:5]:
             movable = "可移动" if classroom.is_movable_seats else "固定"
             tiered = "阶梯" if classroom.is_tiered else "平面"
             available = "可借" if classroom.is_available else "不可借"
-            print(f"  {classroom.name}: {classroom.seats}座位, {movable}座椅, {tiered}教室, {available}")
+            print(f"  {classroom.name}: {classroom.seats}座位，{movable}座椅，{tiered}教室，{available}")
         
-        # 显示占用情况（前10个）
-        print(f"\n占用情况（前10个）:")
+        # 显示占用情况（前 10 个）
+        print(f"\n占用情况（前 10 个）:")
         weekdays = ["", "周一", "周二", "周三", "周四", "周五", "周六", "周日"]
         for occupancy in availability.occupancies[:10]:
             weekday_name = weekdays[occupancy.weekday] if 1 <= occupancy.weekday <= 7 else f"星期{occupancy.weekday}"
             print(f"  {occupancy.classroom_code}: {weekday_name} 第{occupancy.period}节 ({occupancy.reason})")
         
-        # 查询周三第3-4节可用的教室（至少50个座位）
+        # 查询周三第 3-4 节可用的教室（至少 50 个座位）
         available_classrooms = client.get_available_classrooms(
             building_code="17",
             week_string="16",
             weekday=3,      # 周三
-            period=3,       # 第3节
-            min_seats=50    # 至少50个座位
+            period=3,       # 第 3 节
+            min_seats=50    # 至少 50 个座位
         )
         
-        print(f"\n周三第3节可用教室（≥50座位）: {len(available_classrooms)}间")
+        print(f"\n周三第 3 节可用教室（≥50 座位）: {len(available_classrooms)}间")
         for classroom in available_classrooms[:5]:
             print(f"  {classroom.name}: {classroom.seats}座位")
             
     except Exception as e:
-        print(f"教室查询失败: {e}")
+        print(f"教室查询失败：{e}")
         print("请检查教学楼代码是否正确，或者网络连接是否正常") 

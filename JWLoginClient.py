@@ -6,7 +6,7 @@ from typing import Optional
 class JWLoginClient:
     """哈工大（深圳）教务系统登录客户端"""
     
-    # CAS认证相关URL
+    # CAS 认证相关 URL
     IDS_LOGIN_URL = "https://ids.hit.edu.cn/authserver/login"
     JW_SERVICE_URL = "http://jw.hitsz.edu.cn/casLogin"
     
@@ -29,11 +29,11 @@ class JWLoginClient:
         登录教务系统
         
         Args:
-            username: 学号/工号，如果未提供则使用初始化时的username
-            password: 密码，如果未提供则使用初始化时的password
+            username: 学号/工号，如果未提供则使用初始化时的 username
+            password: 密码，如果未提供则使用初始化时的 password
             
         Returns:
-            已认证的requests.Session对象
+            已认证的 requests.Session 对象
             
         Raises:
             ValueError: 如果未提供用户名或密码
@@ -46,7 +46,7 @@ class JWLoginClient:
         if not username or not password:
             raise ValueError("必须提供用户名和密码")
         
-        # 步骤1: 预请求获取登录页面和必要参数
+        # 步骤 1: 预请求获取登录页面和必要参数
         try:
             r = self.session.get(self.IDS_LOGIN_URL, params={'service': self.JW_SERVICE_URL})
             r.raise_for_status()
@@ -56,12 +56,12 @@ class JWLoginClient:
             execution = dom.select_one("input[name=execution]")['value']
             salt = dom.select_one("#pwdEncryptSalt")['value']
             
-            # 步骤2: 加密密码
+            # 步骤 2: 加密密码
             with open("/Users/doby/D/mcp-learn/mcp_hitsz_jw/encrypt.js", encoding="utf8") as f:
                 ctx = execjs.compile(f.read())
             encrypted_pwd = ctx.call("encryptAES", password, salt)
             
-            # 步骤3: 提交登录表单
+            # 步骤 3: 提交登录表单
             payload = {
                 "username": username,
                 "password": encrypted_pwd,
@@ -80,28 +80,28 @@ class JWLoginClient:
                 allow_redirects=False
             )
             
-            # 检查是否成功重定向，并且包含ticket参数
+            # 检查是否成功重定向，并且包含 ticket 参数
             if resp.status_code != 302 or 'ticket=' not in resp.headers.get('Location', ''):
-                raise RuntimeError("登录失败: 未获取到有效的ticket")
+                raise RuntimeError("登录失败：未获取到有效的 ticket")
             
-            # 步骤4: 使用ticket访问教务系统完成认证
+            # 步骤 4: 使用 ticket 访问教务系统完成认证
             redirect_url = resp.headers['Location']
             final_resp = self.session.get(redirect_url)
             final_resp.raise_for_status()
             
-            # 检查是否有教务系统的cookie
+            # 检查是否有教务系统的 cookie
             if not any(c.domain == 'jw.hitsz.edu.cn' for c in self.session.cookies):
-                raise RuntimeError("登录失败: 未获取到教务系统的Cookie")
+                raise RuntimeError("登录失败：未获取到教务系统的 Cookie")
             
             self._is_logged_in = True
             return self.session
             
         except requests.RequestException as e:
-            raise RuntimeError(f"网络请求错误: {str(e)}")
+            raise RuntimeError(f"网络请求错误：{str(e)}")
         except (KeyError, AttributeError) as e:
-            raise RuntimeError(f"解析登录页面失败: {str(e)}")
+            raise RuntimeError(f"解析登录页面失败：{str(e)}")
         except Exception as e:
-            raise RuntimeError(f"登录过程中发生错误: {str(e)}")
+            raise RuntimeError(f"登录过程中发生错误：{str(e)}")
     
     @property
     def is_logged_in(self) -> bool:
@@ -118,7 +118,7 @@ class JWLoginClient:
         获取当前会话，如果未登录则先登录
         
         Returns:
-            已认证的requests.Session对象
+            已认证的 requests.Session 对象
         """
         if not self._is_logged_in:
             return self.login()
@@ -127,14 +127,14 @@ class JWLoginClient:
 
 # 使用示例
 if __name__ == "__main__":
-    # 方式1: 初始化时提供凭据
+    # 方式 1: 初始化时提供凭据
     client = JWLoginClient(username="210110703", password="@96236007Sc")
     session = client.login()
     
-    # 方式2: 登录时提供凭据
+    # 方式 2: 登录时提供凭据
     # client = JWLoginClient()
     # session = client.login(username="你的学号", password="你的密码")
     
-    # 使用已认证的session进行后续操作
+    # 使用已认证的 session 进行后续操作
     # response = session.get("http://jw.hitsz.edu.cn/页面路径")
     # print(response.text)
