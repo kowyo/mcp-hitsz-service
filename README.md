@@ -44,6 +44,20 @@ export HITSZ_PASSWORD=your_password
 
 ## 🚀 使用方法
 
+### 激活虚拟环境
+
+对于 Windows 用户：
+
+```bash
+.\.venv\Scripts\activate.ps1
+```
+
+对于 macOS/Linux 用户：
+
+```bash
+source .venv/bin/activate
+```
+
 ### 调试 MCP Server
 
 ```bash
