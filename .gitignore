@@ -80,3 +80,6 @@ grades_*.csv
 
 # 日志文件
 *.log
+
+# 临时文件
+encrypt.js
