@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "school": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp_hitsz_jw",
+                "run",
+                "mcp_jw_service.py"
+            ]
+        }
+    }
+}
