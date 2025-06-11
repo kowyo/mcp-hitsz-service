@@ -2,19 +2,21 @@
 
 基于 JWClient 的完整教务系统 API 服务，支持成绩、学期、教室等全功能查询。
 
-## 🌟 功能特性
+|            成绩查询            |            教室查询            |
+|:-----------------------------:|:-----------------------------:|
+| ![成绩查询](assets/image1.png) | ![教室查询](assets/image2.png) |
 
-- 🚀 **完整功能覆盖**: 成绩查询、学期管理、教室查询、数据导出
-- 🔐 **自动登录**: 从 `.env` 文件读取凭据，支持自动重连
-- 📊 **智能缓存**: 避免重复请求，提升性能和用户体验
-- 📅 **学期计算**: 支持日期与周次转换、学期信息查询
-- 🏫 **教室管理**: 教学楼列表、教室可用性查询和筛选
-- 📁 **成绩导出**: 支持导出成绩为 CSV 格式
-- 🔧 **MCP 兼容**: 完全兼容 Model Context Protocol
+## 🌟 功能
+
+- [x] 成绩查询
+- [x] 教室查询
+- [x] 教学周查询
+- [] 课表查询
 
 ## 📦 安装依赖
 
 ```bash
+pip install uv
 uv sync
 ```
 
@@ -28,13 +30,6 @@ uv sync
 # 哈工大（深圳）教务系统登录凭据
 HITSZ_USERNAME=your_student_id
 HITSZ_PASSWORD=your_password
-```
-
-### 2. 环境变量方式（可选）
-
-```bash
-export HITSZ_USERNAME=your_student_id
-export HITSZ_PASSWORD=your_password
 ```
 
 ## 🚀 使用方法
