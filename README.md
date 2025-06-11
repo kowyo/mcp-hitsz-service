@@ -9,7 +9,7 @@
 - 📊 **智能缓存**: 避免重复请求，提升性能和用户体验
 - 📅 **学期计算**: 支持日期与周次转换、学期信息查询
 - 🏫 **教室管理**: 教学楼列表、教室可用性查询和筛选
-- 📁 **数据导出**: 支持导出成绩为 CSV 格式
+- 📁 **成绩导出**: 支持导出成绩为 CSV 格式
 - 🔧 **MCP 兼容**: 完全兼容 Model Context Protocol
 
 ## 📦 安装依赖
@@ -29,11 +29,6 @@ uv sync
 HITSZ_USERNAME=your_student_id
 HITSZ_PASSWORD=your_password
 ```
-
-**注意**: 
-- 请将 `your_student_id` 替换为你的学号
-- 请将 `your_password` 替换为你的密码
-- `.env` 文件包含敏感信息，请勿提交到版本控制系统
 
 ### 2. 环境变量方式（可选）
 
@@ -76,6 +71,10 @@ uvx mcpo --port 8000 -- uv --directory absolute/path/to/parent/folder run mcp_jw
 > ```bash
 > uvx mcpo --port 8001 -- uvx mcp-server-time --local-timezone=Asia/Shanghai
 > ```
+
+## 配置文件
+
+可以参考 [mcp_config.json](./mcp_config.json) 和 [system_prompt.txt](./system_prompt.txt)。
 
 ## 🛠️ 可用工具
 
