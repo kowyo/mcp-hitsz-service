@@ -4,9 +4,9 @@
             "command": "uv",
             "args": [
                 "--directory",
-                "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp_hitsz_jw",
+                "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp_hitsz_service",
                 "run",
-                "mcp_jw_service.py"
+                "mcp_hitsz_service.py"
             ]
         }
     }
