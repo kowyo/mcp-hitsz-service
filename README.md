@@ -51,13 +51,13 @@ source .venv/bin/activate
 ### 调试 MCP Server
 
 ```bash
-mcp dev mcp_jw_service.py
+mcp dev mcp_hitsz_service.py
 ```
 
 ### 启动服务
 
 ```bash
-uvx mcpo --port 8000 -- uv --directory absolute/path/to/parent/folder run mcp_jw_service.py
+uvx mcpo --port 8000 -- uv --directory absolute/path/to/parent/folder run mcp_hitsz_service.py
 ```
 
 > [!TIP]

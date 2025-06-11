@@ -688,7 +688,7 @@ async def get_server_info() -> Dict[str, Any]:
                 "HITSZ_USERNAME=your_student_id",
                 "HITSZ_PASSWORD=your_password"
             ],
-            "step3": "运行服务：python mcp_jw_service.py"
+            "step3": "运行服务：python mcp_hitsz_service.py"
         },
         "usage_tips": [
             "首次使用建议先调用 get_all_grades 加载基础数据",
